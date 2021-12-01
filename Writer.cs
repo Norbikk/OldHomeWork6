@@ -1,32 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using static HomeWork6old.CoreComputation;
+using static HomeWork6old.WorkWithFiles;
 
 namespace HomeWork6old
 {
     public class Writer
     {
-        private static readonly int _n = WorkWithFiles.ReadNumber(@"D:\HomeWork6\numbers.txt"); //Создаем инт из файла
-
-        private static readonly List<List<int>>
-            _groupsNums = CoreComputation.NumberGroup(_n); //Создаем лист из сгруппированных чисел
-
-        private static readonly string _path = @"D:\HomeWork6\file.txt"; //Создаем стрингу с путем к файлу
+        private static readonly int _n = ReadNumber("numbers.txt"); //Создаем инт из файла
+        
+        private static readonly string _path = "file.txt"; //Создаем стрингу с путем к файлу
         /// <summary>
         ///     Записываем данные в файл
         /// </summary>
         public static void WriteInFile()
         {
-            var groupNumber = 1;
+            
             var dateTime = DateTime.Now; //Запоминаем в dateTime время
             using (var streamWriter = new StreamWriter(_path)) //Запускаем стримрайтер
             {
-                streamWriter.Write(string.Join("\r\n",
-                                       _groupsNums.Select(gr => $"Группа {groupNumber++} : " + string.Join(", ", gr))) +
-                                   "\r\n"); //Выводим в файл информацию
+                int m = 0;
+                int firstNum = 1;
+                for (int i = 1; i <= _n; i++)
+                {
+                    if (i % firstNum == 0)
+                    {
+                        firstNum = i;
+                        m++;
+                       streamWriter.Write($"\nГруппа {m} : {i}");
+                    }
+                    else
+                    {
+                        streamWriter.Write($", {i}");
+                    }
+                }
+               // streamWriter.WriteLine(GroupNumbers(_n));  //На случай того, если надо будет вернуть в CoreComputations,Но тот алгоритм очень долго высчитывает >300 000
             }
-
             ElapsedTime(dateTime); //Подсчитываем время
             WouldCompress(); //Спрашиваем про архивацию
         }
@@ -35,16 +44,16 @@ namespace HomeWork6old
         /// </summary>
         public static void WriteInConsole()
         {
-            Console.WriteLine($"Колличество групп:{_groupsNums.Count}");
+            Console.WriteLine($"\nКолличество групп: {GroupsCount(_n)}");
         }
         /// <summary>
         ///     Первая выводимая информация в консоли
         /// </summary>
         public static void ReadableFileInfo()
         {
-            var str = @"D:\HomeWork6\numbers.txt";
-            Console.WriteLine($"положите файл с числом по указаному пути {str}");
-            var number = WorkWithFiles.ReadNumber(str);
+            const string str = "numbers.txt";
+            Console.WriteLine($"положите файл с числом по указаному пути bin/Debug/net5.0/{str}");
+            var number = ReadNumber(str);
             Console.WriteLine($"Получено число из файла: {number}");
         }
 
@@ -57,7 +66,7 @@ namespace HomeWork6old
             var input = Console.ReadKey().Key;
             if (input == ConsoleKey.Y)
             {
-                WorkWithFiles.CompressZip(_path);
+                CompressZip(_path);
                 Console.WriteLine($"\nСжатие файла {_path} завершено.");
             }
             else

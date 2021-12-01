@@ -12,7 +12,7 @@ namespace HomeWork6old
         /// <param name="path"></param>
         public static void CompressZip(string path)
         {
-            string compressed = @"D:\HomeWork6\file.zip";
+            string compressed = "file.zip";
             using FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate);
             using FileStream zipfileStream = File.Create(compressed);
             using GZipStream gZipStream = new GZipStream(zipfileStream, CompressionMode.Compress);

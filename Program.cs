@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using static HomeWork6old.Writer;
 
 namespace HomeWork6old
 {
@@ -10,16 +12,17 @@ namespace HomeWork6old
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            Writer.ReadableFileInfo();
+            
+            ReadableFileInfo();
             Console.WriteLine("1 - Записать в файл.\n2 - Вывести в консоль кол-во групп.");
             var input = Console.ReadKey().Key;
             switch (input)
             {
                 case ConsoleKey.D1:
-                    Writer.WriteInFile();
+                    WriteInFile();
                     break;
                 case ConsoleKey.D2:
-                    Writer.WriteInConsole();
+                    WriteInConsole();
                     break;
                 default:
                     Console.WriteLine("\nВыход");
